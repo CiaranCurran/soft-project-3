@@ -14,6 +14,9 @@ int main(void){
 	boardSize = BOARD_SIZE;
 	
 	slot ** board= malloc(boardSize * sizeof(slot *)); //initialise board 
-  
+  	
+	numPlayers = getPlayers(players, playerTypes);
+	setCapabilities(players, playerTypes, numPlayers);
+	initBoard(board, boardSize, slotTypes);
   
 }
