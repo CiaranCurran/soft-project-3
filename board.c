@@ -23,7 +23,16 @@ void initBoard(slot **board, int boardSize, const char ** slotTypes){
 	}
 }
 
-/********ASSIGN PLAYERS GOES HERE ***********/
+void assignPlayers(slot ** board, int boardSize, player * players, int numPlayers){
+    int i, randRow, randCol;
+    for(i=0;i<numPlayers;i++){
+        randRow = randRange(0, boardSize-1);
+        randCol = randRange(0, boardSize-1);
+        players[i].row = randRow;
+        players[i].column = randCol;
+    }
+}
+
 
 //returns random value between min and max inclusive
 int randRange(int min, int max){
