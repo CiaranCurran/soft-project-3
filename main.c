@@ -18,5 +18,6 @@ int main(void){
 	numPlayers = getPlayers(players, playerTypes);
 	setCapabilities(players, playerTypes, numPlayers);
 	initBoard(board, boardSize, slotTypes);
+	/*-----After this line------*/
   
 }
