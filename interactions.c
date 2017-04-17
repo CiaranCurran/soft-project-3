@@ -222,3 +222,152 @@ int removeDeadPlayers(slot ** board, player * players, int numPlayers){
 	}
 	return numAlive;
 }
+
+//takes in attacking player and attacked player and impliments a near attack
+void nearAttack(player * attacker, player * attacked){
+    if(attacked->strength <= 70){
+        attacked->lifePoints -= 0.5 * attacker->strength;
+    }
+    else{
+        attacked->lifePoints -= 0.3 * attacker->strength;
+    }
+}
+ 
+//takes in attacking player and attacked player and impliments a distance attack
+void distanceAttack(player * attacker, player * attacked){
+    if(attacked->dexterity < attacker->dexterity){
+        attacked->lifePoints -= 0.3 * attacker->strength;
+    }
+}
+ 
+void setCapabilities(player * players, const char ** playerType, int numPlayers){
+    int i;
+    int sum;
+    srand(time(NULL));
+    //loop through all players and assign capabilities based on criteria
+    for(i=0;i<numPlayers;i++){
+        /****CAPABILITIES FOR ELF****/
+        if(strcmp(players[i].type, playerType[0])==0){
+            players[i].lifePoints = 100;
+            //luck >=60
+            players[i].luck = randRange(60, 100); //between 60-100
+            //smartness >=70
+            players[i].smartness = randRange(70, 100); //between 70-100
+            //strength <=50
+            players[i].strength = randRange(1, 50); //between 1-50
+            //50<magic skills<80
+            players[i].magicSkills = randRange((50+1), (80-1)); //between but not inclusive 50-80
+            //0<dexterity<=100
+            players[i].dexterity = randRange(1, 100); //between 1-100
+        }
+       
+        /****CAPABILITIES FOR HUMAN****/
+        if(strcmp(players[i].type, playerType[1])==0){
+            players[i].lifePoints = 100;
+            //the sum of the human's capabilities must not exceed 300
+            do{
+            sum = 0;
+            //luck
+            sum += players[i].luck = randRange(1, 100); //between 1-100
+            //smartness
+            sum +=players[i].smartness = randRange(1, 100); //between 1-100
+            //strength
+            sum +=players[i].strength = randRange(1, 100); //between 1-100
+            //magic skills
+            sum +=players[i].magicSkills = randRange(1, 100); //between 1-100
+            //dexterity
+            sum +=players[i].dexterity = randRange(1, 100); //between 1-100
+            }while(sum>=300);
+        }
+           
+        /****CAPABILITIES FOR OGRE****/
+        if(strcmp(players[i].type, playerType[2])==0){
+            players[i].lifePoints = 100;
+            do{
+                sum =0;
+                //luck >=60
+                sum += players[i].luck = randRange(0, 50); //between 0-50
+                //smartness >=70
+                sum += players[i].smartness = randRange(0, 50); //between 0-50
+            }while(sum>50);
+            //strength >=80
+            players[i].strength = randRange(80, 100); //between 80-100
+            //magic skills = 0
+            players[i].magicSkills = 0; //set to 0
+            //dexterity>=80
+            players[i].dexterity = randRange(80, 100);; //between 80-100
+        }
+           
+        /****CAPABILITIES FOR WIZARD****/
+        if(strcmp(players[i].type, playerType[3])==0){
+            players[i].lifePoints = 100;
+            //luck >=50
+            players[i].luck = randRange(50, 100);//between 50-100
+            //smartness >=90
+            players[i].smartness = randRange(90, 100); //between 90-100
+            //strength <=20
+            players[i].strength = randRange(1, 20); //between 1-20
+            //magic skills>=80
+            players[i].magicSkills = randRange(80, 100); //between 80-100
+            //0<dexterity<100
+            players[i].dexterity = randRange(1, 100); //between 1-100
+        }
+    }
+}
+ 
+void movePlayer(slot ** board, player * player, char direction, const char ** slotTypes, int numPlayers){
+    //move player up
+    if(direction=='u'){
+        player->row -= 1;
+        return;
+    }
+    //move player down
+    else if(direction=='d'){
+        player->row += 1;
+        return;
+    }
+    //move player left
+    else if(direction=='l'){
+        player->column -= 1;
+        return;
+    }
+    //move player right
+    else if(direction=='r'){
+        player->column += 1;
+        return;
+    }
+   
+    //adjusting capabilities of player based on slot moved into
+    //if hill
+    if(strcmp(board[player->row][player->column].type, slotTypes[1])==0){    
+        if(player->dexterity<50){            
+            player->strength -= 10;
+        }
+        else if(player->dexterity>=60){              
+            player->strength +=10;
+        }
+    }
+    //if city
+    else if(strcmp(board[player->row][player->column].type, slotTypes[2])==0){              
+        if(player->smartness>60){              
+            player->magicSkills +=10;
+        }
+    }    
+}
+ 
+//takes in attacking player and attacked player and impliments a near attack
+void nearAttack(player * attacker, player * attacked){
+    if(attacked->strength <= 70){
+        attacked->lifePoints -= 0.5 * attacker->strength;
+    }
+    else{
+        attacked->lifePoints -= 0.3 * attacker->strength;
+    }
+}
+ 
+//takes in attacking player and attacked player and impliments a distance attack
+void distanceAttack(player * attacker, player * attacked){
+    if(attacked->dexterity < attacker->dexterity){
+        attacked->lifePoints -= 0.3 * attacker->strength;
+    }
+}
